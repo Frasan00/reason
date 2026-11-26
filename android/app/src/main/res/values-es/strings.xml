@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_name">Grabación</string>
+    <string name="notification_ready">Listo</string>
+    <string name="notification_previewing">Vista previa</string>
+    <string name="notification_recording">Grabando</string>
+    <string name="notification_preview_text">La vista previa de la cámara está activa</string>
+    <string name="notification_open">Toca para abrir reason</string>
+    <string name="notification_stop_recording">Parar la grabación</string>
+    <string name="notification_close_preview">Cerrar la vista previa</string>
+    <string name="notification_warning_low_storage">Detenido: quedan menos de 500 MB libres</string>
+    <string name="notification_warning_storage_error">Detenido: almacenamiento no disponible</string>
+    <string name="notification_warning_camera_error">Detenido: error de la cámara</string>
+    <string name="notification_warning_recorder_error">Detenido: error de grabación</string>
+    <string name="share_clip_title">Compartir clip</string>
+    <string name="notification_channel_car">Coche detectado</string>
+    <string name="notification_car_detected">En el coche</string>
+    <string name="notification_car_detected_text">La grabación no pudo empezar en segundo plano</string>
+    <string name="notification_car_record">Grabar</string>
+    <string name="notification_auto_started">Grabación iniciada automáticamente</string>
+    <string name="notification_auto_started_text">reason detectó el coche (%1$s)</string>
+    <string name="car_reason_bluetooth">Bluetooth</string>
+    <string name="car_reason_motion">movimiento</string>
+    <string name="car_reason_google">Google</string>
+    <string name="car_reason_other">señales del coche</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_name">Recording</string>
+    <string name="notification_ready">Ready</string>
+    <string name="notification_previewing">Previewing</string>
+    <string name="notification_recording">Recording</string>
+    <string name="notification_preview_text">Camera preview is on</string>
+    <string name="notification_open">Tap to open reason</string>
+    <string name="notification_stop_recording">Stop recording</string>
+    <string name="notification_close_preview">Close preview</string>
+    <string name="notification_warning_low_storage">Stopped: less than 500 MB free</string>
+    <string name="notification_warning_storage_error">Stopped: storage unavailable</string>
+    <string name="notification_warning_camera_error">Stopped: camera error</string>
+    <string name="notification_warning_recorder_error">Stopped: recorder error</string>
+    <string name="share_clip_title">Share clip</string>
+    <string name="notification_channel_car">Car detected</string>
+    <string name="notification_car_detected">In the car</string>
+    <string name="notification_car_detected_text">Recording could not start in the background</string>
+    <string name="notification_car_record">Record</string>
+    <string name="notification_auto_started">Recording started automatically</string>
+    <string name="notification_auto_started_text">reason detected your car via %1$s</string>
+    <string name="car_reason_bluetooth">Bluetooth</string>
+    <string name="car_reason_motion">motion</string>
+    <string name="car_reason_google">Google</string>
+    <string name="car_reason_other">car signals</string>
+</resources>

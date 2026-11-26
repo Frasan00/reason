@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_name">Registrazione</string>
+    <string name="notification_ready">Pronto</string>
+    <string name="notification_previewing">Anteprima</string>
+    <string name="notification_recording">Registrazione in corso</string>
+    <string name="notification_preview_text">L\'anteprima della fotocamera è attiva</string>
+    <string name="notification_open">Tocca per aprire reason</string>
+    <string name="notification_stop_recording">Ferma registrazione</string>
+    <string name="notification_close_preview">Chiudi anteprima</string>
+    <string name="notification_warning_low_storage">Fermata: meno di 500 MB liberi</string>
+    <string name="notification_warning_storage_error">Fermata: memoria non disponibile</string>
+    <string name="notification_warning_camera_error">Fermata: errore fotocamera</string>
+    <string name="notification_warning_recorder_error">Fermata: errore di registrazione</string>
+    <string name="share_clip_title">Condividi clip</string>
+    <string name="notification_channel_car">Auto rilevata</string>
+    <string name="notification_car_detected">Sei in auto</string>
+    <string name="notification_car_detected_text">Non è stato possibile avviare la registrazione in background</string>
+    <string name="notification_car_record">Registra</string>
+    <string name="notification_auto_started">Registrazione avviata da sola</string>
+    <string name="notification_auto_started_text">reason ha riconosciuto l\'auto (%1$s)</string>
+    <string name="car_reason_bluetooth">Bluetooth</string>
+    <string name="car_reason_motion">movimento</string>
+    <string name="car_reason_google">Google</string>
+    <string name="car_reason_other">segnali dell\'auto</string>
+</resources>

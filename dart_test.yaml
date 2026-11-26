@@ -1,0 +1,2 @@
+# Keep parallel flutter_tester processes inside the 12 GB memory budget.
+concurrency: 2

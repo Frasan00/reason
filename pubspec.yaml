@@ -1,5 +1,5 @@
 name: reason
-description: "A new Flutter project."
+description: "A dash cam for a spare Android phone."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,11 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  material_ui: ^1.1.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  material_ui: ^1.11.1
+  permission_handler: ^13.0.2
+  shared_preferences: ^2.5.6
+  video_player: ^2.14.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +59,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

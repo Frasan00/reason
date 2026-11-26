@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_name">Aufnahme</string>
+    <string name="notification_ready">Bereit</string>
+    <string name="notification_previewing">Vorschau</string>
+    <string name="notification_recording">Aufnahme läuft</string>
+    <string name="notification_preview_text">Die Kameravorschau ist aktiv</string>
+    <string name="notification_open">Tippen, um reason zu öffnen</string>
+    <string name="notification_stop_recording">Aufnahme stoppen</string>
+    <string name="notification_close_preview">Vorschau schließen</string>
+    <string name="notification_warning_low_storage">Gestoppt: weniger als 500 MB frei</string>
+    <string name="notification_warning_storage_error">Gestoppt: Speicher nicht verfügbar</string>
+    <string name="notification_warning_camera_error">Gestoppt: Kamerafehler</string>
+    <string name="notification_warning_recorder_error">Gestoppt: Aufnahmefehler</string>
+    <string name="share_clip_title">Clip teilen</string>
+    <string name="notification_channel_car">Auto erkannt</string>
+    <string name="notification_car_detected">Im Auto</string>
+    <string name="notification_car_detected_text">Die Aufnahme konnte im Hintergrund nicht starten</string>
+    <string name="notification_car_record">Aufnehmen</string>
+    <string name="notification_auto_started">Aufnahme automatisch gestartet</string>
+    <string name="notification_auto_started_text">reason hat das Auto erkannt (%1$s)</string>
+    <string name="car_reason_bluetooth">Bluetooth</string>
+    <string name="car_reason_motion">Bewegung</string>
+    <string name="car_reason_google">Google</string>
+    <string name="car_reason_other">Auto-Signale</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_name">Enregistrement</string>
+    <string name="notification_ready">Prêt</string>
+    <string name="notification_previewing">Aperçu</string>
+    <string name="notification_recording">Enregistrement en cours</string>
+    <string name="notification_preview_text">L\'aperçu de la caméra est actif</string>
+    <string name="notification_open">Touchez pour ouvrir reason</string>
+    <string name="notification_stop_recording">Arrêter l\'enregistrement</string>
+    <string name="notification_close_preview">Fermer l\'aperçu</string>
+    <string name="notification_warning_low_storage">Arrêté : moins de 500 Mo libres</string>
+    <string name="notification_warning_storage_error">Arrêté : stockage indisponible</string>
+    <string name="notification_warning_camera_error">Arrêté : erreur de la caméra</string>
+    <string name="notification_warning_recorder_error">Arrêté : erreur d\'enregistrement</string>
+    <string name="share_clip_title">Partager le clip</string>
+    <string name="notification_channel_car">Voiture détectée</string>
+    <string name="notification_car_detected">En voiture</string>
+    <string name="notification_car_detected_text">L\'enregistrement n\'a pas pu démarrer en arrière-plan</string>
+    <string name="notification_car_record">Enregistrer</string>
+    <string name="notification_auto_started">Enregistrement démarré automatiquement</string>
+    <string name="notification_auto_started_text">reason a détecté la voiture (%1$s)</string>
+    <string name="car_reason_bluetooth">Bluetooth</string>
+    <string name="car_reason_motion">mouvement</string>
+    <string name="car_reason_google">Google</string>
+    <string name="car_reason_other">signaux de la voiture</string>
+</resources>
