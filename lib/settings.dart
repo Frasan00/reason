@@ -162,6 +162,9 @@ class Settings {
     this.carMotion = true,
     this.carActivity = true,
     this.destroyAfterMinutes = 0,
+    this.burnTimestamp = false,
+    this.timeZone,
+    this.audio = false,
     this.language = AppLanguage.system,
     this.storageUri,
     this.storageLabel,
@@ -199,6 +202,9 @@ class Settings {
   final bool carMotion;
   final bool carActivity;
   final int destroyAfterMinutes;
+  final bool burnTimestamp;
+  final String? timeZone;
+  final bool audio;
   final AppLanguage language;
   final String? storageUri;
   final String? storageLabel;
@@ -218,6 +224,10 @@ class Settings {
     bool? carMotion,
     bool? carActivity,
     int? destroyAfterMinutes,
+    bool? burnTimestamp,
+    String? timeZone,
+    bool clearTimeZone = false,
+    bool? audio,
     AppLanguage? language,
     String? storageUri,
     String? storageLabel,
@@ -236,6 +246,9 @@ class Settings {
       carMotion: carMotion ?? this.carMotion,
       carActivity: carActivity ?? this.carActivity,
       destroyAfterMinutes: destroyAfterMinutes ?? this.destroyAfterMinutes,
+      burnTimestamp: burnTimestamp ?? this.burnTimestamp,
+      timeZone: clearTimeZone ? null : timeZone ?? this.timeZone,
+      audio: audio ?? this.audio,
       language: language ?? this.language,
       storageUri: clearStorage ? null : storageUri ?? this.storageUri,
       storageLabel: clearStorage ? null : storageLabel ?? this.storageLabel,
@@ -271,6 +284,9 @@ class Settings {
     'carMotion': carMotion,
     'carActivity': carActivity,
     'destroyAfterMinutes': destroyAfterMinutes,
+    'burnTimestamp': burnTimestamp,
+    'timeZone': timeZone,
+    'audio': audio,
     'language': language.wire,
     'storageUri': storageUri,
     'storageLabel': storageLabel,
@@ -303,6 +319,9 @@ class Settings {
         maxDestroyMinutes,
         0,
       ),
+      burnTimestamp: map['burnTimestamp'] == true,
+      timeZone: stringOf(map['timeZone']),
+      audio: map['audio'] == true,
       language: AppLanguage.fromWire(map['language']),
       storageUri: stringOf(map['storageUri']),
       storageLabel: stringOf(map['storageLabel']),
@@ -324,6 +343,9 @@ class Settings {
         other.carMotion == carMotion &&
         other.carActivity == carActivity &&
         other.destroyAfterMinutes == destroyAfterMinutes &&
+        other.burnTimestamp == burnTimestamp &&
+        other.timeZone == timeZone &&
+        other.audio == audio &&
         other.language == language &&
         other.storageUri == storageUri &&
         other.storageLabel == storageLabel &&
@@ -343,6 +365,9 @@ class Settings {
     carMotion,
     carActivity,
     destroyAfterMinutes,
+    burnTimestamp,
+    timeZone,
+    audio,
     language,
     storageUri,
     storageLabel,
@@ -378,6 +403,9 @@ class SettingsStore {
       'destroyAfterMinutes',
       settings.destroyAfterMinutes,
     );
+    await _preferences.setBool('burnTimestamp', settings.burnTimestamp);
+    await _preferences.setString('timeZone', settings.timeZone ?? '');
+    await _preferences.setBool('audio', settings.audio);
     await _preferences.setString('language', settings.language.wire);
     await _preferences.setString('storageUri', settings.storageUri ?? '');
     await _preferences.setString('storageLabel', settings.storageLabel ?? '');

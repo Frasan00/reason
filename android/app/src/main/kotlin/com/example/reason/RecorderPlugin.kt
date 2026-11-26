@@ -50,6 +50,9 @@ class RecorderPlugin(
     private var carSensitivity = "normal"
     private var carDataSaver = false
     private var carDestroyAfterMinutes = 0
+    private var carAudio = false
+    private var carStamp = false
+    private var carZone: String? = null
     private var activityVisible = false
 
     fun register() {
@@ -110,6 +113,9 @@ class RecorderPlugin(
             "setStorageFolder" -> setStorageFolder(call, result)
 
             "applyRetention" -> applyRetention(call, result)
+            "getTimeZones" -> result.success(
+                java.util.TimeZone.getAvailableIDs().sorted(),
+            )
             "setLanguage" -> setLanguage(call, result)
 
             else -> result.notImplemented()
@@ -172,6 +178,9 @@ class RecorderPlugin(
         val dataSaver = call.argument<Boolean>("dataSaver") ?: false
         val destroyAfterMinutes =
             (call.argument<Any>("destroyAfterMinutes") as? Number)?.toInt() ?: 0
+        val audio = call.argument<Boolean>("audio") ?: false
+        val stamp = call.argument<Boolean>("stamp") ?: false
+        val zone = call.argument<String>("zone")
         if (camera == null || camera !in CAMERA_VALUES ||
             resolution == null || resolution !in RESOLUTION_VALUES ||
             segmentMinutes !in 1..60 || budgetBytes <= 0 ||
@@ -199,6 +208,9 @@ class RecorderPlugin(
                 putExtra(RecorderService.EXTRA_BUDGET_BYTES, budgetBytes)
                 putExtra(RecorderService.EXTRA_SENSITIVITY, sensitivity)
                 putExtra(RecorderService.EXTRA_DATA_SAVER, dataSaver)
+                putExtra(RecorderService.EXTRA_AUDIO, audio)
+                putExtra(RecorderService.EXTRA_STAMP, stamp)
+                putExtra(RecorderService.EXTRA_ZONE, zone)
                 putExtra(
                     RecorderService.EXTRA_DESTROY_AFTER_MINUTES,
                     destroyAfterMinutes,
@@ -363,6 +375,9 @@ class RecorderPlugin(
         carSensitivity = sensitivity
         carDataSaver = dataSaver
         carDestroyAfterMinutes = destroyAfterMinutes
+        carAudio = call.argument<Boolean>("audio") ?: false
+        carStamp = call.argument<Boolean>("stamp") ?: false
+        carZone = call.argument<String>("zone")
         carSignals = CarDetector.Signals(
             bluetooth = call.argument<Boolean>("bluetooth") ?: true,
             motion = call.argument<Boolean>("motion") ?: true,
@@ -416,6 +431,9 @@ class RecorderPlugin(
             .putExtra(RecorderService.EXTRA_BUDGET_BYTES, carBudgetBytes)
             .putExtra(RecorderService.EXTRA_SENSITIVITY, carSensitivity)
             .putExtra(RecorderService.EXTRA_DATA_SAVER, carDataSaver)
+            .putExtra(RecorderService.EXTRA_AUDIO, carAudio)
+            .putExtra(RecorderService.EXTRA_STAMP, carStamp)
+            .putExtra(RecorderService.EXTRA_ZONE, carZone)
             .putExtra(
                 RecorderService.EXTRA_DESTROY_AFTER_MINUTES,
                 carDestroyAfterMinutes,

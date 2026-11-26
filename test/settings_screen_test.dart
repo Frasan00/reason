@@ -20,6 +20,7 @@ Widget settingsApp(
       onChanged: (next) async => onChanged?.call(next),
       onPickFolder: () async => null,
       onUseAppStorage: () async => null,
+      onLoadTimeZones: () async => const ['UTC', 'Europe/Rome'],
     ),
   );
 }
@@ -120,5 +121,25 @@ void main() {
       final l10n = await AppLocalizations.delegate.load(locale);
       expect(l10n.settings, isNot(english.settings), reason: '$locale');
     }
+  });
+
+  testWidgets('the time zone row appears with the timestamp', (tester) async {
+    await tester.pumpWidget(settingsApp(Settings.defaults));
+    expect(find.text('Time zone'), findsNothing);
+
+    // Recording tab switches in order: data saver, timestamp, audio.
+    await tester.tap(find.byType(Switch).at(1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Time zone'), findsOneWidget);
+    expect(find.text('System'), findsWidgets);
+
+    await tester.tap(find.text('Change'));
+    await tester.pumpAndSettle();
+    expect(find.text('UTC'), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'rome');
+    await tester.pumpAndSettle();
+    expect(find.text('UTC'), findsNothing);
+    expect(find.text('Europe/Rome'), findsOneWidget);
   });
 }

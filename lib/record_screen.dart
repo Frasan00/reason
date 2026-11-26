@@ -238,6 +238,7 @@ class _RecordScreenState extends State<RecordScreen>
           onChanged: _applySettings,
           onPickFolder: _pickFolder,
           onUseAppStorage: _useAppStorage,
+          onLoadTimeZones: widget.recorder.getTimeZones,
         ),
       ),
     );
@@ -292,7 +293,9 @@ class _RecordScreenState extends State<RecordScreen>
     }
     final cameraChanged =
         previous.camera != next.camera ||
-        previous.resolution != next.resolution;
+        previous.resolution != next.resolution ||
+        previous.burnTimestamp != next.burnTimestamp ||
+        previous.timeZone != next.timeZone;
     if (!cameraChanged || widget.recorder.status.recording) return;
     try {
       await widget.recorder.startPreview(next);

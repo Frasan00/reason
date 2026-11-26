@@ -44,6 +44,30 @@ class AppLocalizationsIt extends AppLocalizations {
   String get segmentLength => 'Durata segmenti';
 
   @override
+  String get burnTimestamp => 'Data e ora nel video';
+
+  @override
+  String get burnTimestampDetail => 'Data e ora nell\'angolo di ogni clip';
+
+  @override
+  String get timeZone => 'Fuso orario';
+
+  @override
+  String get timeZoneSystem => 'Sistema';
+
+  @override
+  String get timeZoneSearch => 'Cerca un fuso orario';
+
+  @override
+  String get recordAudio => 'Registra l\'audio';
+
+  @override
+  String get recordAudioDetail => 'Il suono del microfono insieme al video';
+
+  @override
+  String get microphoneNeeded => 'Serve il permesso per il microfono';
+
+  @override
   String get custom => 'Personalizzato';
 
   @override

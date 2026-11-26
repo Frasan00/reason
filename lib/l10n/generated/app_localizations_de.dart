@@ -44,6 +44,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get segmentLength => 'Segmentlänge';
 
   @override
+  String get burnTimestamp => 'Datum und Uhrzeit einbrennen';
+
+  @override
+  String get burnTimestampDetail =>
+      'Datum und Uhrzeit in der Ecke jeder Aufnahme';
+
+  @override
+  String get timeZone => 'Zeitzone';
+
+  @override
+  String get timeZoneSystem => 'System';
+
+  @override
+  String get timeZoneSearch => 'Zeitzone suchen';
+
+  @override
+  String get recordAudio => 'Ton aufnehmen';
+
+  @override
+  String get recordAudioDetail => 'Mikrofonton zum Video';
+
+  @override
+  String get microphoneNeeded => 'Mikrofon-Berechtigung nötig';
+
+  @override
   String get custom => 'Eigener Wert';
 
   @override

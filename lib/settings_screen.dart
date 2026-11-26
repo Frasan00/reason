@@ -13,6 +13,7 @@ class SettingsScreen extends StatefulWidget {
     required this.onChanged,
     required this.onPickFolder,
     required this.onUseAppStorage,
+    required this.onLoadTimeZones,
   });
 
   final Settings initial;
@@ -20,6 +21,7 @@ class SettingsScreen extends StatefulWidget {
   final Future<void> Function(Settings) onChanged;
   final Future<Settings?> Function() onPickFolder;
   final Future<Settings?> Function() onUseAppStorage;
+  final Future<List<String>> Function() onLoadTimeZones;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -28,6 +30,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late Settings _draft = widget.initial;
   final _preferredResolution = <CameraFacing, Resolution>{};
+  List<String>? _zones;
 
   Future<void> _change(Settings next) async {
     final normalized = next.normalize(widget.capabilities);
@@ -80,6 +83,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _draft.carActivity &&
             (statuses[Permission.activityRecognition]?.isGranted ?? false),
       ),
+    );
+  }
+
+  Future<void> _setAudio(bool value) async {
+    final allowed = value
+        ? (await Permission.microphone.request()).isGranted
+        : false;
+    if (value && !allowed) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).microphoneNeeded)),
+      );
+      return;
+    }
+    await _change(_draft.copyWith(audio: allowed));
+  }
+
+  Future<void> _pickTimeZone() async {
+    final zones = _zones ??= await widget.onLoadTimeZones();
+    if (!mounted) return;
+    final picked = await showDialog<String>(
+      context: context,
+      builder: (context) =>
+          _TimeZoneDialog(zones: zones, selected: _draft.timeZone),
+    );
+    if (picked == null) return;
+    await _change(
+      picked.isEmpty
+          ? _draft.copyWith(clearTimeZone: true)
+          : _draft.copyWith(timeZone: picked),
     );
   }
 
@@ -171,6 +204,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
           info: l10n.dataSaverInfo,
           value: _draft.dataSaver,
           onChanged: (value) => _change(_draft.copyWith(dataSaver: value)),
+        ),
+        _SwitchRow(
+          label: l10n.burnTimestamp,
+          detail: l10n.burnTimestampDetail,
+          value: _draft.burnTimestamp,
+          onChanged: (value) => _change(_draft.copyWith(burnTimestamp: value)),
+        ),
+        if (_draft.burnTimestamp)
+          _SettingRow(
+            label: l10n.timeZone,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _draft.timeZone ?? l10n.timeZoneSystem,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                TextButton(onPressed: _pickTimeZone, child: Text(l10n.change)),
+              ],
+            ),
+          ),
+        _SwitchRow(
+          label: l10n.recordAudio,
+          detail: l10n.recordAudioDetail,
+          value: _draft.audio,
+          onChanged: _setAudio,
         ),
         _SettingRow(
           label: l10n.segmentLength,
@@ -835,6 +895,83 @@ class _DurationDialogState extends State<_DurationDialog> {
               ? null
               : () => Navigator.pop(context, minutes),
           child: Text(l10n.set),
+        ),
+      ],
+    );
+  }
+}
+
+class _TimeZoneDialog extends StatefulWidget {
+  const _TimeZoneDialog({required this.zones, required this.selected});
+
+  final List<String> zones;
+  final String? selected;
+
+  @override
+  State<_TimeZoneDialog> createState() => _TimeZoneDialogState();
+}
+
+class _TimeZoneDialogState extends State<_TimeZoneDialog> {
+  String _filter = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final query = _filter.trim().toLowerCase();
+    final matches = query.isEmpty
+        ? widget.zones
+        : widget.zones
+              .where((zone) => zone.toLowerCase().contains(query))
+              .toList(growable: false);
+
+    return AlertDialog(
+      title: Text(l10n.timeZone),
+      contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      content: SizedBox(
+        width: 360,
+        height: 420,
+        child: Column(
+          children: [
+            TextField(
+              autofocus: false,
+              decoration: InputDecoration(
+                hintText: l10n.timeZoneSearch,
+                prefixIcon: const Icon(Icons.search, size: 20),
+              ),
+              onChanged: (value) => setState(() => _filter = value),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                itemCount: matches.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return ListTile(
+                      title: Text(l10n.timeZoneSystem),
+                      trailing: widget.selected == null
+                          ? const Icon(Icons.check, size: 18)
+                          : null,
+                      onTap: () => Navigator.pop(context, ''),
+                    );
+                  }
+                  final zone = matches[index - 1];
+                  return ListTile(
+                    title: Text(zone),
+                    trailing: widget.selected == zone
+                        ? const Icon(Icons.check, size: 18)
+                        : null,
+                    onTap: () => Navigator.pop(context, zone),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.cancel),
         ),
       ],
     );

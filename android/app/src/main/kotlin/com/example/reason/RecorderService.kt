@@ -54,6 +54,9 @@ class RecorderService : LifecycleService() {
         const val EXTRA_SENSITIVITY = "sensitivity"
         const val EXTRA_DATA_SAVER = "dataSaver"
         const val EXTRA_DESTROY_AFTER_MINUTES = "destroyAfterMinutes"
+        const val EXTRA_AUDIO = "audio"
+        const val EXTRA_STAMP = "stamp"
+        const val EXTRA_ZONE = "zone"
         const val EXTRA_VISIBLE = "activityVisible"
         const val EXTRA_AUTO = "auto"
 
@@ -97,6 +100,9 @@ class RecorderService : LifecycleService() {
     private var budgetBytes = StatusBus.DEFAULT_BUDGET_BYTES
     private var sensitivity = "normal"
     private var dataSaver = false
+    private var audio = false
+    private var stamp = false
+    private var zone: String? = null
     private var destroyAfterMinutes = 0
     private var segmentMs = 3 * 60_000L
     private var nextSegmentIndex = 0
@@ -336,6 +342,9 @@ class RecorderService : LifecycleService() {
         ).takeIf { it > 0 } ?: StatusBus.DEFAULT_BUDGET_BYTES
         sensitivity = intent.getStringExtra(EXTRA_SENSITIVITY) ?: "normal"
         dataSaver = intent.getBooleanExtra(EXTRA_DATA_SAVER, false)
+        audio = intent.getBooleanExtra(EXTRA_AUDIO, false)
+        stamp = intent.getBooleanExtra(EXTRA_STAMP, false)
+        zone = intent.getStringExtra(EXTRA_ZONE)
         destroyAfterMinutes = intent.getIntExtra(
             EXTRA_DESTROY_AFTER_MINUTES,
             0,
@@ -679,6 +688,9 @@ class RecorderService : LifecycleService() {
         front = camera == "front",
         resolution = resolution,
         dataSaver = dataSaver,
+        audio = audio,
+        stamp = stamp,
+        zone = zone,
     )
 
     private fun resolutionFor(intent: Intent): String {

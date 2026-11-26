@@ -170,6 +170,54 @@ abstract class AppLocalizations {
   /// **'Segment length'**
   String get segmentLength;
 
+  /// No description provided for @burnTimestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn in the timestamp'**
+  String get burnTimestamp;
+
+  /// No description provided for @burnTimestampDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time in the corner of every clip'**
+  String get burnTimestampDetail;
+
+  /// No description provided for @timeZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time zone'**
+  String get timeZone;
+
+  /// No description provided for @timeZoneSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get timeZoneSystem;
+
+  /// No description provided for @timeZoneSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search a time zone'**
+  String get timeZoneSearch;
+
+  /// No description provided for @recordAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio'**
+  String get recordAudio;
+
+  /// No description provided for @recordAudioDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone sound together with the video'**
+  String get recordAudioDetail;
+
+  /// No description provided for @microphoneNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is needed'**
+  String get microphoneNeeded;
+
   /// No description provided for @custom.
   ///
   /// In en, this message translates to:

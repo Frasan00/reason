@@ -39,6 +39,7 @@ void main() {
             onChanged: (_) async {},
             onPickFolder: () async => null,
             onUseAppStorage: () async => null,
+            onLoadTimeZones: () async => const ['UTC', 'Europe/Rome'],
           ),
         ),
       );

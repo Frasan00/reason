@@ -172,6 +172,9 @@ class RecorderController extends ChangeNotifier {
       'sensitivity': settings.sensitivity.wire,
       'dataSaver': settings.dataSaver,
       'destroyAfterMinutes': settings.destroyAfterMinutes,
+      'audio': settings.audio,
+      'stamp': settings.burnTimestamp,
+      'zone': settings.timeZone,
     });
   }
 
@@ -188,6 +191,9 @@ class RecorderController extends ChangeNotifier {
       'sensitivity': settings.sensitivity.wire,
       'dataSaver': settings.dataSaver,
       'destroyAfterMinutes': settings.destroyAfterMinutes,
+      'audio': settings.audio,
+      'stamp': settings.burnTimestamp,
+      'zone': settings.timeZone,
       'bluetooth': settings.carBluetooth,
       'motion': settings.carMotion,
       'activity': settings.carActivity,
@@ -216,6 +222,12 @@ class RecorderController extends ChangeNotifier {
 
   Future<void> applyRetention(int minutes) async {
     await _invoke('applyRetention', {'minutes': minutes});
+  }
+
+  Future<List<String>> getTimeZones() async {
+    final raw = await _invoke('getTimeZones');
+    if (raw is! List) return const [];
+    return raw.whereType<String>().toList(growable: false);
   }
 
   Future<void> setLanguage(AppLanguage language) async {

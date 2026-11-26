@@ -87,6 +87,30 @@ void main() {
     expect(settings.autoCar, isFalse);
   });
 
+  test('timestamp and audio survive a round trip', () {
+    final settings = Settings.defaults.copyWith(
+      burnTimestamp: true,
+      timeZone: 'Europe/Rome',
+      audio: true,
+    );
+    final restored = Settings.fromMap(settings.toMap());
+    expect(restored.burnTimestamp, isTrue);
+    expect(restored.timeZone, 'Europe/Rome');
+    expect(restored.audio, isTrue);
+    expect(restored, settings);
+  });
+
+  test('the time zone can go back to the system one', () {
+    final settings = Settings.defaults.copyWith(timeZone: 'Europe/Rome');
+    expect(settings.copyWith(clearTimeZone: true).timeZone, isNull);
+  });
+
+  test('audio and the timestamp are off by default', () {
+    expect(Settings.fromMap({}).audio, isFalse);
+    expect(Settings.fromMap({}).burnTimestamp, isFalse);
+    expect(Settings.fromMap({}).timeZone, isNull);
+  });
+
   test('destroy after can be turned off again', () {
     final on = Settings.defaults.copyWith(destroyAfterMinutes: 90);
     expect(on.destroyAfterMinutes, 90);

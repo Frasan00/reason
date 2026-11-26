@@ -13,6 +13,9 @@ budget is reached, so the phone keeps the last hours of the drive and nothing el
   warning when the phone drops below 500 MB free.
 - Car start: recording begins on its own when a Bluetooth car device connects, when the phone
   charges and moves, or when Google reports a vehicle. Each signal can be switched off.
+- Optional timestamp burned into the bottom right of the frame, in the phone's time zone or one you
+  pick from the full list, so footage from a trip abroad still reads in local time.
+- Optional microphone audio, off until you turn it on.
 - Clips can live in a folder you pick, not only in app storage.
 - Library: play, share, delete, clear protection.
 - English, Italiano, Français, Español, Deutsch.
@@ -24,7 +27,8 @@ Download the APK from the Releases page and open it. Android 7 or newer.
 Allow the camera and notifications. Allowing the battery exemption is what keeps the recorder alive
 with the screen off on phones that kill background services.
 
-The app asks for no microphone and no location permission. It records video only.
+The microphone is asked for only when you switch audio on, and no location permission is ever
+requested.
 
 ## Build
 
@@ -41,9 +45,9 @@ signing key is kept, are in [docs/RELEASE.md](docs/RELEASE.md).
 
 ## Limits
 
-There is no audio. No GPS, speed or timestamp is burned into the frame. iOS is not supported: keeping
-the camera alive with the screen off needs an Android foreground service. Some phones run hot after
-an hour of 1080p recording.
+No GPS or speed is burned into the frame, only the date and time. iOS is not supported: keeping the
+camera alive with the screen off needs an Android foreground service. Some phones run hot after an
+hour of 1080p recording, and the burned-in timestamp adds a little work per frame.
 
 ## License
 

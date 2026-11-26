@@ -87,6 +87,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$camerax")
     implementation("androidx.camera:camera-video:$camerax")
     implementation("androidx.camera:camera-view:$camerax")
+    implementation("androidx.camera:camera-effects:$camerax")
     implementation("androidx.lifecycle:lifecycle-service:2.11.1")
     implementation("androidx.core:core:1.19.1")
     implementation("androidx.documentfile:documentfile:1.0.0")

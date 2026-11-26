@@ -1,9 +1,15 @@
 package com.example.reason
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.MediaFormat
+import android.os.Handler
+import android.os.Looper
+import androidx.camera.core.CameraEffect
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
+import androidx.camera.effects.OverlayEffect
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.FallbackStrategy
 import androidx.camera.video.FileOutputOptions
@@ -13,6 +19,7 @@ import androidx.camera.video.Recorder
 import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
 import androidx.camera.video.VideoRecordEvent
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import java.io.File
 import java.util.concurrent.Executor
@@ -33,6 +40,9 @@ class CameraSession(
         val front: Boolean,
         val resolution: String,
         val dataSaver: Boolean,
+        val audio: Boolean = false,
+        val stamp: Boolean = false,
+        val zone: String? = null,
     )
 
     private var provider: ProcessCameraProvider? = null
@@ -44,6 +54,9 @@ class CameraSession(
     private var binding = false
     private var pendingConfig: Config? = null
     private var boundConfig: Config? = null
+    private var overlay: OverlayEffect? = null
+    private var stampUnsupported = false
+    private val paintHandler = Handler(Looper.getMainLooper())
     private var released = false
 
     val isBound: Boolean
@@ -94,8 +107,10 @@ class CameraSession(
         rotation: Int,
     ) {
         if (released) return
+        val useStamp = config.stamp && !stampUnsupported
         try {
             cameraProvider.unbindAll()
+            releaseOverlay()
             val selector = if (config.front) {
                 CameraSelector.DEFAULT_FRONT_CAMERA
             } else {
@@ -130,6 +145,30 @@ class CameraSession(
             val surfaceProvider = attachedProvider ?: PreviewRegistry.provider
             attachedProvider = surfaceProvider
             surfaceProvider?.let { newPreview.setSurfaceProvider(it) }
+            if (useStamp) {
+                val painter = TimestampPainter(config.zone)
+                val effect = OverlayEffect(
+                    CameraEffect.PREVIEW or CameraEffect.VIDEO_CAPTURE,
+                    1,
+                    paintHandler,
+                ) { error ->
+                    listener.onCameraError(
+                        "Timestamp overlay failed: ${error.message}",
+                    )
+                }
+                effect.setOnDrawListener { frame ->
+                    painter.draw(
+                        frame.overlayCanvas,
+                        frame.size,
+                        frame.rotationDegrees,
+                        frame.isMirroring,
+                    )
+                    true
+                }
+                newPreview.setEffect(effect)
+                newVideoCapture.setEffect(effect)
+                overlay = effect
+            }
             cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 selector,
@@ -146,8 +185,24 @@ class CameraSession(
             videoCapture = null
             preview = null
             boundConfig = null
+            releaseOverlay()
+            if (useStamp) {
+                // Some devices refuse effects. A stamp is cosmetic; recording is not.
+                stampUnsupported = true
+                bindInternal(cameraProvider, config, rotation)
+                return
+            }
             listener.onCameraError(error.message ?: "Camera bind failed")
         }
+    }
+
+    private fun audioGranted(): Boolean =
+        ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) ==
+            PackageManager.PERMISSION_GRANTED
+
+    private fun releaseOverlay() {
+        runCatching { overlay?.close() }
+        overlay = null
     }
 
     fun attachPreview(provider: Preview.SurfaceProvider?) {
@@ -173,7 +228,8 @@ class CameraSession(
         ensureBound(config, rotation)
     }
 
-    fun startSegment(part: File, limitMs: Long, rotation: Int): Boolean {        if (released || activeRecording != null) return false
+    fun startSegment(part: File, limitMs: Long, rotation: Int): Boolean {
+        if (released || activeRecording != null) return false
         val activeRecorder = recorder ?: return false
         val activeCapture = videoCapture ?: return false
         return try {
@@ -182,7 +238,14 @@ class CameraSession(
                 .setDurationLimitMillis(limitMs)
                 .build()
             val pending = activeRecorder.prepareRecording(context, options)
-            activeRecording = pending.start(mainExecutor) { event ->
+            val audio = config?.audio == true && audioGranted()
+            val withAudio = try {
+                if (audio) pending.withAudioEnabled() else pending
+            } catch (_: Exception) {
+                // A device without an audio source still records video.
+                pending
+            }
+            activeRecording = withAudio.start(mainExecutor) { event ->
                 if (event is VideoRecordEvent.Finalize && !released) {
                     activeRecording = null
                     listener.onSegmentFinalized(
@@ -235,5 +298,6 @@ class CameraSession(
         recorder = null
         attachedProvider = null
         boundConfig = null
+        releaseOverlay()
     }
 }
